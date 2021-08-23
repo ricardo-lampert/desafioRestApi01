@@ -5,23 +5,27 @@ namespace RestApi.Models
 {
     public class ProductService : IProductService
     {
-        private readonly ProductContext productContext;
-        public ProductService(ProductContext productContext)
+        private readonly ProductContext context;
+        public ProductService(ProductContext context)
         {
-            this.productContext = productContext;
+            this.context = InitializeContext(context);
+        }
 
-            if (!productContext.Products.Any())
+        private ProductContext InitializeContext(ProductContext context)
+        {
+            if (!context.Products.Any())
             {
-                productContext.Products.Add(new Product { Category = "Brinquedos", Profit = 25 });
-                productContext.Products.Add(new Product { Category = "Bebidas", Profit = 30 });
-                productContext.Products.Add(new Product { Category = "Informática", Profit = 10 });
-                productContext.Products.Add(new Product { Category = "Softplan", Profit = 5 });
-                productContext.SaveChanges();
+                context.Products.Add(new Product { Category = "Brinquedos", Profit = 25 });
+                context.Products.Add(new Product { Category = "Bebidas", Profit = 30 });
+                context.Products.Add(new Product { Category = "Informática", Profit = 10 });
+                context.Products.Add(new Product { Category = "Softplan", Profit = 5 });
+                context.SaveChanges();
             }
+            return context;
         }
         public IEnumerable<Product> GetProducts()
         {
-            return productContext.Products.ToList();
+            return context.Products.ToList();
         }
         public float GetPrice(string category, float cost)
         {
@@ -35,12 +39,14 @@ namespace RestApi.Models
         }
         public float GetProfit(string category)
         {
-            List<Product> products = productContext.Products.Where(i => (i.Category == category)).ToList();
+            List<Product> products = context.Products.Where(i => (i.Category == category)).ToList();
             if (products.Count == 0f)
             {
                 return 15f;
             }
             return products[0].Profit;
         }
+
+
     }
 }

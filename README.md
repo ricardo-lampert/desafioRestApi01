@@ -33,5 +33,5 @@ The categories with the margin of profit folow this table
 # Makefile
 
 **make run** to run the aplication
-
 **make test** to ran the tests for the aplication
+
