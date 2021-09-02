@@ -1,17 +1,24 @@
 using System.Collections.Generic;
 using RestApi.Models;
 using Microsoft.AspNetCore.Mvc;
+
 namespace RestApi.Controllers
 {
-    [Route("api01")]
+    static class Constants
+    {
+        public const string Route = "api01";
+        public const string PriceEndpoint = "price";
+    }
+
+    [Route(Constants.Route)]
     [ApiController]
+
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;
-
-        public ProductController(ProductContext context, IProductService service)
+        public ProductController(ProductContext context, IProductService productService)
         {
-            productService = service;
+            this.productService = productService;
         }
 
         [HttpGet]
@@ -20,8 +27,7 @@ namespace RestApi.Controllers
             return Ok(productService.GetProducts());
         }
 
-        // GET api01/price?category=<category>,cost=<cost>
-        [HttpGet("price")]
+        [HttpGet(Constants.PriceEndpoint)]
         public ActionResult<float> GetPrice(string category, float cost)
         {
             return Ok(productService.GetPrice(category, cost));

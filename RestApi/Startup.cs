@@ -23,7 +23,7 @@ namespace RestApi
         {
             services.AddControllers();
             services.AddDbContext<ProductContext>(opt =>
-                opt.UseInMemoryDatabase("ProductList"));
+                opt.UseInMemoryDatabase("Product"));
             services.AddScoped<IProductService, ProductService>();
         }
 

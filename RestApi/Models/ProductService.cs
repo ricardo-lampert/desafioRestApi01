@@ -1,13 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace RestApi.Models
 {
     public class ProductService : IProductService
     {
-        private readonly ProductContext context;
+        public readonly ProductContext context;
+        public Product product;
+
         public ProductService(ProductContext context)
         {
+            this.product = new Product();
             this.context = context;
         }
 
@@ -15,26 +19,14 @@ namespace RestApi.Models
         {
             return context.Products.ToList();
         }
+
         public float GetPrice(string category, float cost)
         {
-            if (cost <= 0f)
-            {
-                return 0f;
-            }
-            float profit = GetProfit(category);
-            float value = cost + (cost * (profit / 100f));
+            List<Product> products = GetProducts().ToList();
+            float profit = product.GetProfit(products, category);
+            float value = product.GetValue(cost, profit);
             return value;
         }
-        public float GetProfit(string category)
-        {
-            List<Product> products = context.Products.Where(i => (i.Category == category)).ToList();
-            if (products.Count == 0f)
-            {
-                return 15f;
-            }
-            return products[0].Profit;
-        }
-
 
     }
 }

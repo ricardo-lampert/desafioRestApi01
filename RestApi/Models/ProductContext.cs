@@ -8,10 +8,12 @@ namespace RestApi.Models
         public DbSet<Product> Products { get; set; }
         public ProductContext(DbContextOptions<ProductContext> options)
             : base(options)
-        {  
+        {
             InitializeContext();
         }
-        private void InitializeContext(){
+
+        private void InitializeContext()
+        {
             if (!Products.Any())
             {
                 Products.Add(new Product { Category = "Brinquedos", Profit = 25 });
